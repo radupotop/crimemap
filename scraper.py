@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
+import time
+import json
 from pprint import pprint
 
 # Evening Standard basic scraper
@@ -13,7 +15,7 @@ def _scrape_article(article):
     if not _title: return
     
     return {
-        'title': _title.text,
+        'title': _title.text.strip(),
         'href': base_url + _title.a.get('href'),
         'image': _img.get('data-original') or _img.get('style') if _img else None
     }
@@ -26,4 +28,10 @@ def scrape():
     return [_scrape_article(art) for art in articles if hasattr(art.h1, 'a')]
 
 
-pprint(scrape())
+while True:
+    _file = open('crime.json', 'a')
+    _result = scrape();
+    pprint(_result)
+    json.dump(_result, _file);
+    _file.close();
+    time.sleep(3600)
