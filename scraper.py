@@ -30,8 +30,8 @@ def scrape():
 
 while True:
     _file = open('crime.json', 'a')
-    _result = scrape();
+    _result = scrape()
     pprint(_result)
-    json.dump(_result, _file);
-    _file.close();
+    json.dump(_result, _file, indent=True)
+    _file.close()
     time.sleep(3600)
