@@ -1,10 +1,13 @@
+# Evening Standard basic scraper
+
 from bs4 import BeautifulSoup
 import requests
 import time
 import json
 from pprint import pprint
 
-# Evening Standard basic scraper
+import model
+
 base_url    = 'http://www.standard.co.uk'  
 scraped_url = 'http://www.standard.co.uk/news/crime/'
 
