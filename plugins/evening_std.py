@@ -14,23 +14,29 @@ base_url    = 'http://www.standard.co.uk'
 scraped_url = 'http://www.standard.co.uk/news/crime/'
 
 def _scrape_article(article):
+    """
+    Scrape an article and return its data
+    """
     _title = article.find('h1')
     _img = article.find(class_='image')
     
     if not _title: return
     
-    _article_data = {
+    _article = {
         'title': _title.text.strip(),
         'href': base_url + _title.a.get('href'),
         'image': _img.get('data-original') or _img.get('style') if _img else None
     }
 
-    _article_data['hash'] = sha256(json.dumps(_article_data).encode()).hexdigest()
-    _article_data['scrape_datetime'] = datetime.utcnow()
+    _article['hash'] = sha256((_article['title'] + _article['href']).encode()).hexdigest()
+    _article['scrape_datetime'] = datetime.utcnow()
 
-    return _article_data
+    return _article
 
 def scrape():
+    """
+    Scrape entire page.
+    """
     resp = requests.get(scraped_url)
     page = BeautifulSoup(resp.content)
     articles = page.find_all('article')
