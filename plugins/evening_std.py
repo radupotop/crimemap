@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import json
+from datetime import datetime
+from haslib import sha256
 from pprint import pprint
 
 import model
@@ -17,11 +19,16 @@ def _scrape_article(article):
     
     if not _title: return
     
-    return {
+    _article_data = {
         'title': _title.text.strip(),
         'href': base_url + _title.a.get('href'),
         'image': _img.get('data-original') or _img.get('style') if _img else None
     }
+
+    _article_data['hash'] = sha256(json.dumps(_article_data).encode()).hexdigest()
+    _article_data['scrape_datetime'] = datetime.utcnow()
+
+    return _article_data
 
 def scrape():
     resp = requests.get(scraped_url)
