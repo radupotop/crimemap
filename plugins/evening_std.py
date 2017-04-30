@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import json
+import re
 from datetime import datetime
 from hashlib import sha256
 from pprint import pprint
@@ -13,6 +14,17 @@ class EveningStd():
     """
     base_url    = 'http://www.standard.co.uk'
     scraped_url = 'http://www.standard.co.uk/news/crime/'
+
+    @classmethod
+    def _get_image_url(cls, img_elem):
+        imagesrc = img_elem.get('data-original')
+        if imagesrc:
+            return imagesrc
+
+        style = img_elem.get('style')
+        if style:
+            url = re.findall(r'url\([\'\"](.*)[\'\"]\)', style, flags=re.IGNORECASE)[0]
+            return url
 
     @classmethod
     def _scrape_article(cls, article):
@@ -27,7 +39,7 @@ class EveningStd():
         _article = {
             'title': _title.text.strip(),
             'href': cls.base_url + _title.a.get('href'),
-            'image': _img.get('data-original') or _img.get('style') if _img else None
+            'image': cls._get_image_url(_img) if _img else None
         }
 
         _article['hash'] = sha256((_article['title'] + _article['href']).encode()).hexdigest()
