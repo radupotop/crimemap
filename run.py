@@ -6,6 +6,7 @@ from plugins import EveningStd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from pprint import pprint
 import logging
 import time
 
@@ -29,7 +30,9 @@ while True:
             art_mdl = ArticleIndex(**art)
             session.add(art_mdl)
             session.commit()
+            log.info('Created entry: {}'.format(art['hash']))
         except (IntegrityError, InvalidRequestError):
             log.warning('Entry already exists: {}'.format(art['hash']))
 
+    pprint('----')
     time.sleep(3600)
