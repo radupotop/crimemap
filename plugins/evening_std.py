@@ -13,7 +13,7 @@ class EveningStd():
     The Evening Standard basic scraper.
     """
     base_url    = 'http://www.standard.co.uk'
-    scraped_url = 'http://www.standard.co.uk/news/crime/'
+    resource_url = '/news/crime/'
 
     @classmethod
     def _get_image_url(cls, img_elem):
@@ -52,8 +52,8 @@ class EveningStd():
         """
         Scrape entire page.
         """
-        resp = requests.get(cls.scraped_url)
-        page = BeautifulSoup(resp.content)
+        resp = requests.get(cls.base_url + cls.resource_url)
+        page = BeautifulSoup(resp.content, 'lxml')
         articles = page.find_all('article')
 
         return [cls._scrape_article(art) for art in articles if hasattr(art.h1, 'a')]
