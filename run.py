@@ -33,7 +33,8 @@ while True:
             session.commit()
             log.info('Created entry: {}'.format(art['hash']))
         except (IntegrityError, InvalidRequestError):
-            log.warning('Entry already exists: {}'.format(art['hash']))
+            # entry exists
+            pass
 
     pprint('----')
     time.sleep(3600*2)
