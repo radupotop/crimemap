@@ -10,9 +10,9 @@ from pprint import pprint
 import logging
 import time
 
+logging.basicConfig(level=logging.INFO)
 log=logging.getLogger('Scraper')
 log.setLevel(logging.DEBUG)
-
 
 db = create_engine('mysql+pymysql://root@localhost/crimemap')
 Base.metadata.create_all(db)
@@ -24,6 +24,7 @@ session = DBSession()
 while True:
 
     articles = EveningStd.scrape()
+    log.info('Scraping')
 
     for art in articles:
         try:
@@ -35,4 +36,4 @@ while True:
             log.warning('Entry already exists: {}'.format(art['hash']))
 
     pprint('----')
-    time.sleep(3600)
+    time.sleep(3600*2)
