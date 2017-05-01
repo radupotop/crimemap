@@ -36,5 +36,6 @@ while True:
             # entry exists
             pass
 
+    session.close()
     pprint('----')
     time.sleep(3600)
