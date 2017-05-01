@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from model import Base, ArticleIndex
+from model import Base, ArticleIndex, Borough
 from plugins import EveningStd
 
 from sqlalchemy import create_engine

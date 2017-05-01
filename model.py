@@ -15,3 +15,14 @@ class ArticleIndex(Base):
 
     def __repr__(self):
         return '<ArticleIndex {} with Title {}>'.format(self.hash, self.title)
+
+
+class Borough(Base):
+    __tablename__ = 'boroughs'
+
+    id = sa.Column(sa.Integer, primary_key=True, nullable=False)
+    borough = sa.Column(sa.String(80), unique=True, nullable=False)
+    designation = sa.column(sa.Enum('Inner', 'Outer'))
+
+    def __repr__(self):
+        return '<Borough {}>'.format(self.borough)
