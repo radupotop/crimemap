@@ -19,10 +19,10 @@ Base.metadata.create_all(db)
 Base.metadata.bind = db
 
 DBSession = sessionmaker(bind=db)
-session = DBSession()
 
 while True:
 
+    session = DBSession()
     articles = EveningStd.scrape()
     log.info('Scraping')
 
@@ -37,4 +37,4 @@ while True:
             pass
 
     pprint('----')
-    time.sleep(3600*2)
+    time.sleep(3600)
