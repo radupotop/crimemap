@@ -22,7 +22,7 @@ class Borough(Base):
 
     id = sa.Column(sa.Integer, primary_key=True, nullable=False)
     borough = sa.Column(sa.String(80), unique=True, nullable=False)
-    designation = sa.column(sa.Enum('Inner', 'Outer'))
+    designation = sa.Column(sa.Enum('Inner', 'Outer'))
 
     def __repr__(self):
         return '<Borough {}>'.format(self.borough)
