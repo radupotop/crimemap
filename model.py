@@ -17,6 +17,25 @@ class ArticleIndex(Base):
         return '<ArticleIndex {} with Title {}>'.format(self.hash, self.title)
 
 
+class ArticleContent(Base):
+    __tablename__ = 'article_content'
+
+    id = sa.Column(sa.Integer, primary_key=True, nullable=False)
+    title = sa.Column(sa.String(255))
+    subtitle = sa.Column(sa.String(255))
+    href = sa.Column(sa.String(255))
+    author = sa.Column(sa.String(255))
+    content = sa.Column(sa.Text())
+    aside = sa.Column(sa.Text())
+    media = sa.Column(sa.Text()) #images, video in JSON format
+    meta = sa.Column(sa.Text()) #tags, other stuff in JSON format
+    scrape_datetime = sa.Column(sa.DateTime())
+    index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), nullable=False)
+
+    def __repr__(self):
+        return '<ArticleContent {} with Title {}>'.format(self.index_hash, self.title)
+
+
 class Borough(Base):
     __tablename__ = 'boroughs'
 
