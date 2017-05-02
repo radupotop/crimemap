@@ -29,6 +29,7 @@ class ArticleContent(Base):
     aside = sa.Column(sa.Text())
     media = sa.Column(sa.Text()) #images, video in JSON format
     meta = sa.Column(sa.Text()) #tags, other stuff in JSON format
+    published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
     index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), nullable=False)
 
