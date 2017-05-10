@@ -28,6 +28,7 @@ class EveningStdArticle():
             'published_datetime': datetime.fromtimestamp(int(int(article.header.time.get('unixtime'))/1000)),
             'scrape_datetime': datetime.utcnow(),
             'media': json.dumps([img.get('src') for img in article.find_all('img') if img.get('title')]),
+            'meta': json.dumps({'tags':[tag.text for tag in article.find_all(attrs={'itemprop': 'keywords'})]}),
             'href': url,
             'content': cls.__join_par(article),
             'aside': cls.__join_par(_infobox) if _infobox else None,
