@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 log=logging.getLogger('Scraper')
 log.setLevel(logging.DEBUG)
 
-db = create_engine('mysql+pymysql://root@localhost/crimemap')
+db = create_engine('postgresql://postgres@localhost/crimemap')
 Base.metadata.create_all(db)
 Base.metadata.bind = db
 

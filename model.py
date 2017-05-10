@@ -27,8 +27,8 @@ class ArticleContent(Base):
     author = sa.Column(sa.String(255))
     content = sa.Column(sa.Text())
     aside = sa.Column(sa.Text())
-    media = sa.Column(sa.Text()) #images, video in JSON format
-    meta = sa.Column(sa.Text()) #tags, other stuff in JSON format
+    media = sa.Column(sa.JSON()) #images, video in JSON format
+    meta = sa.Column(sa.JSON()) #tags, other stuff in JSON format
     published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
     index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), nullable=False)
@@ -42,7 +42,7 @@ class Borough(Base):
 
     id = sa.Column(sa.Integer, primary_key=True, nullable=False)
     borough = sa.Column(sa.String(80), unique=True, nullable=False)
-    designation = sa.Column(sa.Enum('Inner', 'Outer'))
+    designation = sa.Column(sa.Enum('Inner', 'Outer', name='designation'))
 
     def __repr__(self):
         return '<Borough {}>'.format(self.borough)
