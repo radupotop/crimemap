@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects import postgresql as pg
 
 Base = declarative_base()
 
@@ -27,8 +28,8 @@ class ArticleContent(Base):
     author = sa.Column(sa.String(255))
     content = sa.Column(sa.Text())
     aside = sa.Column(sa.Text())
-    media = sa.Column(sa.JSON()) #images, video in JSON format
-    meta = sa.Column(sa.JSON()) #tags, other stuff in JSON format
+    media = sa.Column(pg.JSONB()) #images, video in JSON format
+    meta = sa.Column(pg.JSONB()) #tags, other stuff in JSON format
     published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
     index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), nullable=False)
