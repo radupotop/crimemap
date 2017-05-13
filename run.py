@@ -25,16 +25,16 @@ async def run_article_index():
     Article index task
     """
     while True:
+        log.info('Scraping')
         session = DBSession()
         articles = EveningStd.scrape()
-        log.info('Scraping')
+        article_models = [ArticleIndex(**art) for art in articles]
 
-        for art in articles:
+        for art_mdl in article_models:
             try:
-                art_mdl = ArticleIndex(**art)
                 session.add(art_mdl)
                 session.commit()
-                log.info('Created entry: {}'.format(art['hash']))
+                log.info('Created entry: {}'.format(art_mdl.hash))
             except (IntegrityError, InvalidRequestError):
                 # entry exists
                 pass
