@@ -26,6 +26,10 @@ def run_all_article_contents():
 
     for art in all_idx:
         scraped_article = EveningStdArticle.scrape(art.href)
+
+        if not scraped_article:
+            continue
+
         model = ArticleContent(**scraped_article)
         model.index_hash = art.hash
         pprint(model)

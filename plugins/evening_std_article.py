@@ -16,6 +16,10 @@ class EveningStdArticle():
         resp = requests.get(url)
         page = BeautifulSoup(resp.content, 'lxml')
         article = page.article
+
+        if not article:
+            return
+
         header = article.header
 
         _intro = header.find(class_='intro') if header else None

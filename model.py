@@ -33,7 +33,7 @@ class ArticleContent(Base):
     meta = sa.Column(pg.JSONB()) #tags, other stuff in JSON format
     published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
-    index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), nullable=False)
+    index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), unique=True, nullable=False)
 
     def __repr__(self):
         return '<ArticleContent {} with Title {}>'.format(self.index_hash, self.title)
