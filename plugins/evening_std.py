@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import time
-import json
 import re
 from datetime import datetime
 from pprint import pprint
