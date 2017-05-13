@@ -8,4 +8,5 @@ def get_hash(*args):
     """
     Get a standard hash.
     """
-    return sha256((''.join(args)).encode()).hexdigest()
+    arglist = [str(a) for a in args]
+    return sha256((''.join(arglist)).encode()).hexdigest()

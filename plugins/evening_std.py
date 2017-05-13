@@ -4,7 +4,6 @@ import time
 import json
 import re
 from datetime import datetime
-from hashlib import sha256
 from pprint import pprint
 
 
@@ -33,17 +32,15 @@ class EveningStd():
         """
         _title = article.find('h1')
         _img = article.find(class_='image')
-        
+
         if not _title: return
-        
+
         _article = {
             'title': _title.text.strip(),
             'href': cls.base_url + _title.a.get('href'),
-            'image': cls._get_image_url(_img) if _img else None
+            'image': cls._get_image_url(_img) if _img else None,
+            'scrape_datetime': datetime.utcnow(),
         }
-
-        _article['hash'] = sha256((_article['title'] + _article['href']).encode()).hexdigest()
-        _article['scrape_datetime'] = datetime.utcnow()
 
         return _article
 
