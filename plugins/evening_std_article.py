@@ -16,15 +16,17 @@ class EveningStdArticle():
         resp = requests.get(url)
         page = BeautifulSoup(resp.content, 'lxml')
         article = page.article
+        header = article.header
 
-        _intro = article.header.find(class_='intro')
+        _intro = header.find(class_='intro') if header else None
+        _published = header.time.get('unixtime') if header else None
         _infobox = article.find(class_='ines_infobox')
 
         _scraped = {
-            'title': article.header.h1.text.strip(),
+            'title': header.h1.text.strip() if header else None,
             'subtitle': _intro.text.strip() if _intro else None,
-            'author': article.header.find(class_='author').text.strip(),
-            'published_datetime': datetime.fromtimestamp(int(int(article.header.time.get('unixtime'))/1000)),
+            'author': header.find(class_='author').text.strip() if header else None,
+            'published_datetime': datetime.fromtimestamp(int(int(_published)/1000)) if _published else None,
             'scrape_datetime': datetime.utcnow(),
             'media': [img.get('src') for img in article.find_all('img') if img.get('title')],
             'meta': {'tags': [tag.text for tag in article.find_all(attrs={'itemprop': 'keywords'})]},

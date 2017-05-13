@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import re
+from utils import get_hash
 from datetime import datetime
 from pprint import pprint
 
@@ -40,6 +41,8 @@ class EveningStd():
             'image': cls._get_image_url(_img) if _img else None,
             'scrape_datetime': datetime.utcnow(),
         }
+
+        _article['hash'] = get_hash(_article['title'], _article['href'])
 
         return _article
 

@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects import postgresql as pg
-from utils import get_hash
 
 Base = declarative_base()
+
 
 class ArticleIndex(Base):
     __tablename__ = 'article_index'
@@ -17,11 +17,6 @@ class ArticleIndex(Base):
 
     def __repr__(self):
         return '<ArticleIndex {} with Title {}>'.format(self.hash, self.title)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.hash:
-            self.hash = get_hash(self.title, self.href)
 
 
 class ArticleContent(Base):
@@ -43,10 +38,6 @@ class ArticleContent(Base):
     def __repr__(self):
         return '<ArticleContent {} with Title {}>'.format(self.index_hash, self.title)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.index_hash:
-            self.index_hash = get_hash(self.title, self.href)
 
 class Borough(Base):
     __tablename__ = 'boroughs'
