@@ -31,13 +31,13 @@ async def run_article_index():
         article_models = [ArticleIndex(**art) for art in articles]
 
         for art_mdl in article_models:
+            session.add(art_mdl)
             try:
-                session.add(art_mdl)
                 session.commit()
                 log.info('Created entry: {}'.format(art_mdl.hash))
-            except (IntegrityError, InvalidRequestError):
+            except IntegrityError:
                 # entry exists
-                pass
+                session.rollback()
 
         session.close()
         pprint('----')
