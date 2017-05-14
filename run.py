@@ -12,7 +12,7 @@ import logging
 import asyncio
 
 logging.basicConfig(level=logging.INFO)
-log=logging.getLogger('Scraper')
+log=logging.getLogger('Scrape')
 log.setLevel(logging.DEBUG)
 
 db = create_engine('postgresql://postgres@localhost/crimemap')
@@ -35,6 +35,7 @@ class Runners():
         """
         while True:
             log.info('Scraping index...')
+            log.info(datetime.utcnow().isoformat())
             session = DBSession()
             articles = EveningStd.scrape()
             article_models = [ArticleIndex(**art) for art in articles]
@@ -60,6 +61,7 @@ class Runners():
         while True:
             await asyncio.sleep(10)
             log.info('Scraping recent content...')
+            log.info(datetime.utcnow().isoformat())
             session = DBSession()
 
             x_time_ago = datetime.utcnow() - timedelta(days=1)
