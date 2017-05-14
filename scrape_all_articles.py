@@ -10,7 +10,7 @@ from pprint import pprint
 import logging
 
 logging.basicConfig(level=logging.INFO)
-log=logging.getLogger('Scraper')
+log=logging.getLogger('AllArticles')
 log.setLevel(logging.DEBUG)
 
 db = create_engine('postgresql://postgres@localhost/crimemap')
@@ -32,11 +32,11 @@ def run_all_article_contents():
 
         model = ArticleContent(**scraped_article)
         model.index_hash = art.hash
-        pprint(model)
         session.add(model)
 
         try:
             session.commit()
+            log.info(model)
         except IntegrityError:
             # we've already seen this article
             session.rollback()
