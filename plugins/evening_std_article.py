@@ -24,12 +24,13 @@ class EveningStdArticle():
 
         _intro = header.find(class_='intro') if header else None
         _published = header.time.get('unixtime') if header else None
+        _author = header.find(class_='author') if header else None
         _infobox = article.find(class_='ines_infobox')
 
         _scraped = {
             'title': header.h1.text.strip() if header else None,
             'subtitle': _intro.text.strip() if _intro else None,
-            'author': header.find(class_='author').text.strip() if header else None,
+            'author': _author.text.strip() if _author else None,
             'published_datetime': datetime.fromtimestamp(int(int(_published)/1000)) if _published else None,
             'scrape_datetime': datetime.utcnow(),
             'media': [img.get('src') for img in article.find_all('img') if img.get('title')],
