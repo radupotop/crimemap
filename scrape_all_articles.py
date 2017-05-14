@@ -37,7 +37,7 @@ def run_all_article_contents():
             session.add(model)
             session.commit()
 
-        except IntegrityError:
+        except (IntegrityError, InvalidRequestError):
             # nothing to do, we've already seen this article
             pass
 
