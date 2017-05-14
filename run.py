@@ -26,6 +26,7 @@ class Runners():
     Scrape Runners
     """
     sleep = 3600
+    # load_plugins = ['EveningStd', 'EveningStdArticle']
 
     @classmethod
     async def run_index(cls):

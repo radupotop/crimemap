@@ -35,7 +35,7 @@ class EveningStd(BaseScraper):
         _title = article.find('h1')
         _img = article.find(class_='image')
 
-        if not _title: return
+        if not (_title and _title.a): return
 
         _article = {
             'title': _title.text.strip(),
