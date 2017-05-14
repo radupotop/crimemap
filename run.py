@@ -34,7 +34,7 @@ async def run_article_index():
             session.add(art_mdl)
             try:
                 session.commit()
-                log.info('Created entry: {}'.format(art_mdl.hash))
+                log.info(art_mdl)
             except IntegrityError:
                 # entry exists
                 session.rollback()
