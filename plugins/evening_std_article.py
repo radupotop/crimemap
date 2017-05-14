@@ -1,11 +1,14 @@
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
+from .base_scraper import BaseScraper
 
-class EveningStdArticle():
+
+class EveningStdArticle(BaseScraper):
     """
     The Evening Standard Article scraper.
     """
+    type = 'article'
 
     @staticmethod
     def __join_par(element):

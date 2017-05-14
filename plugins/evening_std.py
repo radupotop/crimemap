@@ -5,14 +5,16 @@ import re
 from utils import get_hash
 from datetime import datetime
 from pprint import pprint
+from .base_scraper import BaseScraper
 
 
-class EveningStd():
+class EveningStd(BaseScraper):
     """
     The Evening Standard basic scraper.
     """
     base_url    = 'http://www.standard.co.uk'
     resource_url = '/news/crime/'
+    type = 'index'
 
     @classmethod
     def _get_image_url(cls, img_elem):
