@@ -25,21 +25,21 @@ def run_all_article_contents():
     all_idx = session.query(ArticleIndex).all()
 
     for art in all_idx:
+        scraped_article = EveningStdArticle.scrape(art.href)
+
+        if not scraped_article:
+            continue
+
+        model = ArticleContent(**scraped_article)
+        model.index_hash = art.hash
+        pprint(model)
+        session.add(model)
+
         try:
-            scraped_article = EveningStdArticle.scrape(art.href)
-
-            if not scraped_article:
-                continue
-
-            model = ArticleContent(**scraped_article)
-            model.index_hash = art.hash
-            pprint(model)
-            session.add(model)
             session.commit()
-
-        except (IntegrityError, InvalidRequestError):
-            # nothing to do, we've already seen this article
-            pass
+        except IntegrityError:
+            # we've already seen this article
+            session.rollback()
 
     session.close()
 
