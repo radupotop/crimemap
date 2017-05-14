@@ -23,9 +23,9 @@ class ArticleContent(Base):
     __tablename__ = 'article_content'
 
     id = sa.Column(sa.Integer, primary_key=True, nullable=False)
-    title = sa.Column(sa.String(255))
-    subtitle = sa.Column(sa.String(255))
-    href = sa.Column(sa.String(255))
+    title = sa.Column(sa.Text())
+    subtitle = sa.Column(sa.Text())
+    href = sa.Column(sa.Text())
     author = sa.Column(sa.String(255))
     content = sa.Column(sa.Text())
     aside = sa.Column(sa.Text())
