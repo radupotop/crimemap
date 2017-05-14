@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from model import Base, ArticleIndex, ArticleContent
-from plugins import EveningStd
+from plugins import EveningStd, EveningStdArticle
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -86,10 +86,14 @@ class Runners():
             await asyncio.sleep(cls.sleep)
 
 
+    @classmethod
+    def run(cls):
+        loop = asyncio.get_event_loop()
+        asyncio.ensure_future(cls.run_index(), loop=loop)
+        asyncio.ensure_future(cls.run_recent_content(), loop=loop)
 
-loop = asyncio.get_event_loop()
-asyncio.ensure_future(Runners.run_index(), loop=loop)
-asyncio.ensure_future(Runners.run_recent_content(), loop=loop)
+        loop.run_forever()
+        loop.close()
 
-loop.run_forever()
-loop.close()
+
+Runners.run()
