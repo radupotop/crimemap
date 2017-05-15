@@ -89,6 +89,9 @@ class Runners():
 
     @classmethod
     def run(cls):
+        """
+        Run event loop with tasks.
+        """
         loop = asyncio.get_event_loop()
         asyncio.ensure_future(cls.run_index(), loop=loop)
         asyncio.ensure_future(cls.run_recent_content(), loop=loop)

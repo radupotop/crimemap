@@ -39,6 +39,21 @@ class ArticleContent(Base):
         return '<ArticleContent {} with Title {}>'.format(self.index_hash, self.title)
 
 
+class Source(Base):
+    """
+    News source.
+    """
+    __tablename__ = 'source'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.String(255))
+    scrape_href = sa.Column(sa.String(255))
+    poll_interval = sa.Column(sa.Integer, default=3600)
+
+    def __repr__(self):
+        return '<Source {} with Href {}>'.format(self.name, self.scrape_href)
+
+
 class Borough(Base):
     __tablename__ = 'boroughs'
 
