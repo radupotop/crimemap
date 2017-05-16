@@ -6,14 +6,13 @@ from utils import get_hash
 from datetime import datetime
 from pprint import pprint
 from .base_scraper import BaseScraper
+from urllib.parse import urlparse
 
 
 class EveningStd(BaseScraper):
     """
     The Evening Standard basic scraper.
     """
-    base_url    = 'http://www.standard.co.uk'
-    resource_url = '/news/crime/'
     type = 'index'
 
     @classmethod
@@ -49,12 +48,13 @@ class EveningStd(BaseScraper):
         return _article
 
     @classmethod
-    def scrape(cls):
+    def scrape(cls, url):
         """
         Scrape entire page.
         """
-        resp = requests.get(cls.base_url + cls.resource_url)
+        resp = requests.get(url)
         page = BeautifulSoup(resp.content, 'lxml')
         articles = page.find_all('article')
 
+        cls.base_url = '://'.join(urlparse(url)[:2])
         return [cls._scrape_article(art) for art in articles if hasattr(art.h1, 'a')]
