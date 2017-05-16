@@ -34,6 +34,7 @@ class ArticleContent(Base):
     published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
     index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), unique=True, nullable=False)
+    # source_id = sa.Column(sa.Integer, sa.ForeignKey('sources.id'), unique=True, nullable=False)
 
     def __repr__(self):
         return '<ArticleContent {} with Title {}>'.format(self.index_hash, self.title)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from model import Base, ArticleIndex, ArticleContent, Source
-from plugins import EveningStd, EveningStdArticle
+import plugins
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -35,10 +35,11 @@ class Runners():
         while True:
             log.info('Scraping index...   ' + datetime.utcnow().isoformat())
             session = DBSession()
-            news_sources = session.query(Source).all()
+            news_sources = session.query(Source).filter(Source.plugin='evening_std.EveningStd').all()
 
             for source in news_sources:
-                articles = EveningStd.scrape(source.scrape_href)
+                Plugin = getattr(plugins, source.plugin)
+                articles = Plugin.scrape(source.scrape_href)
                 article_models = [ArticleIndex(**art) for art in articles]
 
                 for art_mdl in article_models:
