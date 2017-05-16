@@ -28,29 +28,25 @@ class Runners():
     sleep = 3600
 
     @classmethod
-    async def run_index(cls):
+    async def run_index(cls, source):
         """
         Article index task
         """
         while True:
-            log.info('Scraping index...   ' + datetime.utcnow().isoformat())
+            Plugin = getattr(plugins, source.plugin)
+            log.info('Scraping Source {} with Plugin {} on {}'.format(source.name, Plugin.__name__, datetime.utcnow().isoformat()))
+            articles = Plugin.scrape(source.scrape_href)
+            article_models = [ArticleIndex(**art) for art in articles]
             session = DBSession()
-            news_sources = session.query(Source).filter(Source.plugin == 'EveningStd').all()
 
-            for source in news_sources:
-                Plugin = getattr(plugins, source.plugin)
-                log.info('Scraping Source {} with Plugin {}'.format(source.name, Plugin.__name__))
-                articles = Plugin.scrape(source.scrape_href)
-                article_models = [ArticleIndex(**art) for art in articles]
-
-                for art_mdl in article_models:
-                    session.add(art_mdl)
-                    try:
-                        session.commit()
-                        log.info(art_mdl)
-                    except IntegrityError:
-                        # entry exists
-                        session.rollback()
+            for art_mdl in article_models:
+                session.add(art_mdl)
+                try:
+                    session.commit()
+                    log.info(art_mdl)
+                except IntegrityError:
+                    # entry exists
+                    session.rollback()
 
             session.close()
             pprint('----')
@@ -91,6 +87,12 @@ class Runners():
             pprint('----')
             await asyncio.sleep(cls.sleep)
 
+    @classmethod
+    def get_sources(cls):
+        session = DBSession()
+        news_sources = session.query(Source).all()
+        session.close()
+        return news_sources
 
     @classmethod
     def run(cls):
@@ -98,7 +100,10 @@ class Runners():
         Run event loop with tasks.
         """
         loop = asyncio.get_event_loop()
-        asyncio.ensure_future(cls.run_index(), loop=loop)
+
+        for source in cls.get_sources():
+            asyncio.ensure_future(cls.run_index(source), loop=loop)
+
         asyncio.ensure_future(cls.run_recent_content(), loop=loop)
 
         loop.run_forever()
