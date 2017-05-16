@@ -35,9 +35,10 @@ class Runners():
         while True:
             log.info('Scraping index...   ' + datetime.utcnow().isoformat())
             session = DBSession()
-            news_sources = session.query(Source).filter(Source.plugin='evening_std.EveningStd').all()
+            news_sources = session.query(Source).filter(Source.plugin == 'EveningStd').all()
 
             for source in news_sources:
+                log.info('Scraping Source: ' + source.name)
                 Plugin = getattr(plugins, source.plugin)
                 articles = Plugin.scrape(source.scrape_href)
                 article_models = [ArticleIndex(**art) for art in articles]
@@ -69,7 +70,8 @@ class Runners():
             all_articles_idx = session.query(ArticleIndex).filter(ArticleIndex.scrape_datetime > x_time_ago).all()
 
             for art in all_articles_idx:
-                scraped_article = EveningStdArticle.scrape(art.href)
+                Plugin = getattr(plugins, 'EveningStdArticle')
+                scraped_article = Plugin.scrape(art.href)
 
                 if not scraped_article:
                     continue
