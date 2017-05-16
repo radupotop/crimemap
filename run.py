@@ -38,8 +38,8 @@ class Runners():
             news_sources = session.query(Source).filter(Source.plugin == 'EveningStd').all()
 
             for source in news_sources:
-                log.info('Scraping Source: ' + source.name)
                 Plugin = getattr(plugins, source.plugin)
+                log.info('Scraping Source {} with Plugin {}'.format(source.name, Plugin.__name__))
                 articles = Plugin.scrape(source.scrape_href)
                 article_models = [ArticleIndex(**art) for art in articles]
 
