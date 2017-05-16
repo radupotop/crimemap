@@ -50,7 +50,7 @@ class Runners():
 
             session.close()
             pprint('----')
-            await asyncio.sleep(cls.sleep)
+            await asyncio.sleep(source.poll_interval)
 
     @classmethod
     async def run_recent_content(cls):
