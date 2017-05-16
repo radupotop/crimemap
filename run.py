@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from model import Base, ArticleIndex, ArticleContent
+from model import Base, ArticleIndex, ArticleContent, Source
 from plugins import EveningStd, EveningStdArticle
 
 from sqlalchemy import create_engine
@@ -26,7 +26,6 @@ class Runners():
     Scrape Runners
     """
     sleep = 3600
-    # load_plugins = ['EveningStd', 'EveningStdArticle']
 
     @classmethod
     async def run_index(cls):
@@ -36,17 +35,20 @@ class Runners():
         while True:
             log.info('Scraping index...   ' + datetime.utcnow().isoformat())
             session = DBSession()
-            articles = EveningStd.scrape()
-            article_models = [ArticleIndex(**art) for art in articles]
+            news_sources = session.query(Source).all()
 
-            for art_mdl in article_models:
-                session.add(art_mdl)
-                try:
-                    session.commit()
-                    log.info(art_mdl)
-                except IntegrityError:
-                    # entry exists
-                    session.rollback()
+            for source in news_sources:
+                articles = EveningStd.scrape(source.scrape_href)
+                article_models = [ArticleIndex(**art) for art in articles]
+
+                for art_mdl in article_models:
+                    session.add(art_mdl)
+                    try:
+                        session.commit()
+                        log.info(art_mdl)
+                    except IntegrityError:
+                        # entry exists
+                        session.rollback()
 
             session.close()
             pprint('----')

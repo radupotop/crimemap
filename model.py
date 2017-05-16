@@ -41,13 +41,15 @@ class ArticleContent(Base):
 
 class Source(Base):
     """
-    News source.
+    News sources.
     """
-    __tablename__ = 'source'
+    __tablename__ = 'sources'
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String(255))
+    base_url = sa.Column(sa.String(255))
     scrape_href = sa.Column(sa.String(255))
+    plugin = sa.Column(sa.String(255))
     poll_interval = sa.Column(sa.Integer, default=3600)
 
     def __repr__(self):
