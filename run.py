@@ -36,7 +36,7 @@ class Runners():
             Plugin = getattr(plugins, source.plugin)
             log.info('Scraping Source {} with Plugin {} on {}'.format(source.name, Plugin.__name__, datetime.utcnow().isoformat()))
             articles = Plugin.scrape(source.scrape_href)
-            article_models = [ArticleIndex(**art) for art in articles]
+            article_models = [ArticleIndex(**art) for art in articles if art]
             session = DBSession()
 
             for art_mdl in article_models:
