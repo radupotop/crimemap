@@ -18,6 +18,9 @@ class EveningStdArticle(BaseScraper):
 
     @classmethod
     def scrape(cls, url):
+        """
+        TODO use more stuff from <meta> tags
+        """
         resp = requests.get(url)
         page = BeautifulSoup(resp.content, 'lxml')
         article = page.article
