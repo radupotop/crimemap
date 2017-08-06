@@ -23,15 +23,13 @@ class EveningStdArticle(BaseScraper):
         if not article:
             return
 
-        header = article.header
-
-        _intro = header.find(class_='intro') if header else None
-        _published = header.time.get('unixtime') if hasattr(header, 'time') else None
-        _author = header.find(class_='author') if header else None
+        _intro = article.find(class_='intro')
+        _published = article.time.get('unixtime') if hasattr(article, 'time') else None
+        _author = article.find(class_='author')
         _infobox = article.find(class_='ines_infobox')
 
         _scraped = {
-            'title': header.h1.text.strip() if header else None,
+            'title': article.h1.text.strip() if hasattr(article, 'h1') else None,
             'subtitle': _intro.text.strip() if _intro else None,
             'author': _author.text.strip() if _author else None,
             'published_datetime': datetime.fromtimestamp(int(int(_published)/1000)) if _published else None,
