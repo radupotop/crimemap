@@ -26,7 +26,7 @@ class EveningStdArticle(BaseScraper):
         header = article.header
 
         _intro = header.find(class_='intro') if header else None
-        _published = header.time.get('unixtime') if header else None
+        _published = header.time.get('unixtime') if hasattr(header, 'time') else None
         _author = header.find(class_='author') if header else None
         _infobox = article.find(class_='ines_infobox')
 
