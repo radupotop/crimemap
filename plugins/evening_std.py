@@ -14,6 +14,7 @@ class EveningStd(BaseScraper):
     The Evening Standard basic scraper.
     """
     type = 'index'
+    img_regex = re.compile(r'url\([\'\"](.*)[\'\"]\)', re.I)
 
     @classmethod
     def _get_image_url(cls, img_elem):
@@ -23,7 +24,7 @@ class EveningStd(BaseScraper):
 
         style = img_elem.get('style')
         if style:
-            url = re.findall(r'url\([\'\"](.*)[\'\"]\)', style, flags=re.IGNORECASE)[0]
+            url = cls.img_regex.findall(style)[0]
             return url
 
     @classmethod
