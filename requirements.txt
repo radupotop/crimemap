@@ -1,7 +1,7 @@
 appdirs==1.4.3
 beautifulsoup4==4.5.3
 bs4==0.0.1
-lxml==3.7.3
+lxml==4.2.4
 packaging==16.8
 psycopg2==2.7.3.1
 PyMySQL==0.7.11
