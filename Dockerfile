@@ -1,6 +1,10 @@
-FROM base/archlinux
+FROM toendeavour/archlinux:base-x86_64
 
 RUN pacman -Syyu --noconfirm gcc postgresql python python-pip
+RUN systemctl start postgresql
+ 
+RUN useradd --create-home app
+USER app
 
 WORKDIR /home/app
 COPY . /home/app
