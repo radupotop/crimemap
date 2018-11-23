@@ -12,7 +12,7 @@ import logging
 import asyncio
 
 logging.basicConfig(level=logging.INFO)
-log=logging.getLogger('Scrape')
+log = logging.getLogger('Scrape')
 log.setLevel(logging.DEBUG)
 
 db = create_engine('postgresql://postgres@localhost/crimemap')
@@ -21,10 +21,12 @@ Base.metadata.bind = db
 
 DBSession = sessionmaker(bind=db)
 
-class Runners():
+
+class Runners:
     """
     Scrape Runners
     """
+
     sleep = 3600
 
     @classmethod
@@ -34,7 +36,11 @@ class Runners():
         """
         while True:
             Plugin = getattr(plugins, source.plugin)
-            log.info('Scraping Source {} with Plugin {} on {}'.format(source.name, Plugin.__name__, datetime.utcnow().isoformat()))
+            log.info(
+                'Scraping Source {} with Plugin {} on {}'.format(
+                    source.name, Plugin.__name__, datetime.utcnow().isoformat()
+                )
+            )
             articles = Plugin.scrape(source.scrape_href)
             article_models = [ArticleIndex(**art) for art in articles if art]
             session = DBSession()
@@ -63,7 +69,11 @@ class Runners():
             session = DBSession()
 
             x_time_ago = datetime.utcnow() - timedelta(days=1)
-            all_articles_idx = session.query(ArticleIndex).filter(ArticleIndex.scrape_datetime > x_time_ago).all()
+            all_articles_idx = (
+                session.query(ArticleIndex)
+                .filter(ArticleIndex.scrape_datetime > x_time_ago)
+                .all()
+            )
 
             for art in all_articles_idx:
                 Plugin = getattr(plugins, 'EveningStdArticle')

@@ -29,11 +29,13 @@ class ArticleContent(Base):
     author = sa.Column(sa.String(255))
     content = sa.Column(sa.Text())
     aside = sa.Column(sa.Text())
-    media = sa.Column(pg.JSONB()) #images, video in JSON format
-    meta = sa.Column(pg.JSONB()) #tags, other stuff in JSON format
+    media = sa.Column(pg.JSONB())  # images, video in JSON format
+    meta = sa.Column(pg.JSONB())  # tags, other stuff in JSON format
     published_datetime = sa.Column(sa.DateTime())
     scrape_datetime = sa.Column(sa.DateTime())
-    index_hash = sa.Column(sa.String(64), sa.ForeignKey('article_index.hash'), unique=True, nullable=False)
+    index_hash = sa.Column(
+        sa.String(64), sa.ForeignKey('article_index.hash'), unique=True, nullable=False
+    )
     # source_id = sa.Column(sa.Integer, sa.ForeignKey('sources.id'), unique=True, nullable=False)
 
     def __repr__(self):
@@ -44,6 +46,7 @@ class Source(Base):
     """
     News sources.
     """
+
     __tablename__ = 'sources'
 
     id = sa.Column(sa.Integer, primary_key=True)

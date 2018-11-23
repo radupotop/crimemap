@@ -10,13 +10,14 @@ from pprint import pprint
 import logging
 
 logging.basicConfig(level=logging.INFO)
-log=logging.getLogger('AllArticles')
+log = logging.getLogger('AllArticles')
 log.setLevel(logging.DEBUG)
 
 db = create_engine('postgresql://postgres@localhost/crimemap')
 Base.metadata.bind = db
 
 DBSession = sessionmaker(bind=db)
+
 
 def run_all_article_contents():
     log.info('Scraping')
