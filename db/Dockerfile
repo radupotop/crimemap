@@ -1,4 +1,4 @@
 FROM postgres:10.7
-VOLUME ["/var/lib/postgresql"]
-WORKDIR /var/lib/postgresql
+VOLUME ["/var/lib/postgres"]
+WORKDIR /var/lib/postgres
 EXPOSE 5432
