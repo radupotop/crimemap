@@ -10,12 +10,14 @@ from pprint import pprint
 from datetime import datetime, timedelta
 import logging
 import asyncio
+import os
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('Scrape')
 log.setLevel(logging.DEBUG)
 
-db = create_engine('postgresql://postgres@localhost/crimemap')
+hostname = 'db' if os.getenv('IS_DOCKER') else 'localhost'
+db = create_engine('postgresql://postgres@' + hostname + '/crimemap')
 Base.metadata.create_all(db)
 Base.metadata.bind = db
 
