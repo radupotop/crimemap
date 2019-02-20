@@ -1,9 +1,3 @@
-FROM postgres:10.7
-WORKDIR /var/lib/postgresql
-VOLUME ["/var/lib/postgresql"]
-EXPOSE 5432
-
-
 FROM python:3.7.2
 COPY . /home/app
 WORKDIR /home/app
