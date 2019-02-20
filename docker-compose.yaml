@@ -6,8 +6,6 @@ services:
     - "5432:5432"
   app:
     build: ./app
-    environment:
-    - IS_DOCKER=1
     depends_on:
     - db
     links:
