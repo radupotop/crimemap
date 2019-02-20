@@ -1,16 +1,10 @@
-FROM toendeavour/archlinux:base-x86_64
+FROM postgres:10.7
+WORKDIR /var/lib/postgres
+EXPOSE 5432
 
-RUN pacman -Syyu --noconfirm gcc postgresql python python-pip
-RUN systemctl start postgresql
- 
-RUN useradd --create-home app
-USER app
 
-WORKDIR /home/app
+FROM python:3.7.2
 COPY . /home/app
-
-RUN python -m venv env
-RUN source env/bin/activate
-RUN pip install -r requirements.txt
-
+WORKDIR /home/app
+RUN pip install --no-cache-dir -r requirements.txt
 CMD ["python", "run.py"]
